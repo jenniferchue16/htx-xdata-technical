@@ -1,3 +1,4 @@
 __pycache__/
 .venv/
 backend/uploads/
+backend/transcriptions.db

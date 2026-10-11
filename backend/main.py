@@ -2,6 +2,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, File, Query, UploadFile
 
+import database
 import transcriber
 
 UPLOAD_DIRECTORY = Path(__file__).parent / "uploads"
@@ -29,20 +30,18 @@ def transcribe(files: list[UploadFile] = File(...)):
             save_path = UPLOAD_DIRECTORY / f"{original_name.stem}_{counter}{original_name.suffix}"
             counter += 1
         save_path.write_bytes(uploaded_file.file.read())
-        # TODO: store the result in the database
-        results.append({"filename": save_path.name, "transcription": transcriber.transcribe(save_path)})
+        transcription = transcriber.transcribe(save_path)
+        results.append(database.save_transcription(save_path.name, transcription))
     return results
 
 
 @app.get("/transcriptions")
 def get_transcriptions():
     """Retrieves all transcriptions from the database."""
-    # TODO: read from the database
-    return []
+    return database.get_all_transcriptions()
 
 
 @app.get("/search")
 def search(filename: str = Query(..., min_length=1)):
     """Query for transcriptions from the database."""
-    # TODO: query the database by file name
-    return []
+    return database.search_transcriptions(filename)
