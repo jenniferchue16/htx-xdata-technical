@@ -1,4 +1,10 @@
+from pathlib import Path
+
 from fastapi import FastAPI, File, Query, UploadFile
+
+import transcriber
+
+UPLOAD_DIRECTORY = Path(__file__).parent / "uploads"
 
 app = FastAPI(title="HTX xData Technical Test")
 
@@ -12,8 +18,20 @@ def health():
 @app.post("/transcribe")
 def transcribe(files: list[UploadFile] = File(...)):
     """Accepts audio files and returns transcriptions."""
-    # TODO: save each file under a unique name, transcribe it, store the result
-    return [{"filename": f.filename, "transcription": ""} for f in files]
+    UPLOAD_DIRECTORY.mkdir(exist_ok=True)
+    results = []
+    for uploaded_file in files:
+        original_name = Path(uploaded_file.filename)
+        save_path = UPLOAD_DIRECTORY / original_name.name
+        # If file name already exists, to add a suffix e.g. sample1.mp3 -> sample1_1.mp3
+        counter = 1
+        while save_path.exists():
+            save_path = UPLOAD_DIRECTORY / f"{original_name.stem}_{counter}{original_name.suffix}"
+            counter += 1
+        save_path.write_bytes(uploaded_file.file.read())
+        # TODO: store the result in the database
+        results.append({"filename": save_path.name, "transcription": transcriber.transcribe(save_path)})
+    return results
 
 
 @app.get("/transcriptions")
