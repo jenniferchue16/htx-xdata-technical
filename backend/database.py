@@ -1,7 +1,8 @@
 import sqlite3
 from pathlib import Path
 
-DATABASE_PATH = Path(__file__).parent / "transcriptions.db"
+DATABASE_PATH = Path(__file__).parent / "data" / "transcriptions.db"
+DATABASE_PATH.parent.mkdir(exist_ok=True)
 
 # Creates the table on startup if it doesn't exist yet
 with sqlite3.connect(DATABASE_PATH) as connection:

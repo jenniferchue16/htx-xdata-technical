@@ -5,7 +5,7 @@ from fastapi import FastAPI, File, Query, UploadFile
 import database
 import transcriber
 
-UPLOAD_DIRECTORY = Path(__file__).parent / "uploads"
+UPLOAD_DIRECTORY = Path(__file__).parent / "data" / "uploads"
 
 app = FastAPI(title="HTX xData Technical Test")
 
@@ -19,7 +19,7 @@ def health():
 @app.post("/transcribe")
 def transcribe(files: list[UploadFile] = File(...)):
     """Accepts audio files and returns transcriptions."""
-    UPLOAD_DIRECTORY.mkdir(exist_ok=True)
+    UPLOAD_DIRECTORY.mkdir(parents=True, exist_ok=True)
     results = []
     for uploaded_file in files:
         original_name = Path(uploaded_file.filename)
