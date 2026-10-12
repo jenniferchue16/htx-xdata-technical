@@ -1,0 +1,1 @@
+MODEL_NAME = "openai/whisper-tiny"

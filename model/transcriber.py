@@ -1,8 +1,10 @@
 import librosa
 from transformers import pipeline
 
+from config import MODEL_NAME
+
 # Load Whisper once at startup. chunk_length_s splits audio longer than Whisper's 30s window.
-speech_recognizer = pipeline("automatic-speech-recognition", model="openai/whisper-tiny", chunk_length_s=30)
+speech_recognizer = pipeline("automatic-speech-recognition", model=MODEL_NAME, chunk_length_s=30)
 
 
 def transcribe(audio_path):

@@ -1,7 +1,21 @@
 services:
+  model:
+    build: ./model
+    # No published port: only the backend reaches the model, over Docker's internal network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      start_period: 2m
+      start_interval: 5s
+      interval: 5m
+
   backend:
     build: ./backend
     ports:
       - "8000:8000"
+    environment:
+      - MODEL_URL=http://model:8001
     volumes:
       - ./backend/data:/app/data
+    depends_on:
+      model:
+        condition: service_healthy
