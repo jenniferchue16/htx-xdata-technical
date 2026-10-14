@@ -1,3 +1,5 @@
+"""Whisper model service: receives one audio file and returns its transcription. Stateless, internal only."""
+
 import tempfile
 from pathlib import Path
 
@@ -18,6 +20,7 @@ def health():
 def transcribe(file: UploadFile = File(...)):
     """Transcribes a single audio file."""
     # librosa reads from a file path, so write the upload to a temporary file.
+    # The original extension is kept so the format is detected, and the file is deleted when the block ends.
     with tempfile.NamedTemporaryFile(suffix=Path(file.filename).suffix, delete_on_close=False) as audio_file:
         audio_file.write(file.file.read())
         audio_file.close()

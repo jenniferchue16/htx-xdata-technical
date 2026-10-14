@@ -1,3 +1,5 @@
+"""Public REST API: saves uploaded audio, gets transcriptions from the model service and stores them in SQLite."""
+
 import os
 import sqlite3
 from pathlib import Path
@@ -9,6 +11,7 @@ import database
 
 UPLOAD_DIRECTORY = Path(__file__).parent / "data" / "uploads"
 UPLOAD_DIRECTORY.mkdir(parents=True, exist_ok=True)
+# Docker Compose sets this to http://model:8001; the default is for running locally
 MODEL_URL = os.getenv("MODEL_URL", "http://localhost:8001")
 ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".flac", ".ogg"}
 
@@ -41,7 +44,8 @@ def transcribe(files: list[UploadFile] = File(...)):
             continue
 
         save_path = UPLOAD_DIRECTORY / original_name.name
-        # If file name already exists, to add a suffix e.g. sample1.mp3 -> sample1_1.mp3
+        # If the file name already exists, add a suffix e.g. sample1.mp3 -> sample1_1.mp3.
+        # "xb" mode only creates a new file, so concurrent uploads can't overwrite each other.
         counter = 1
         while True:
             try:
@@ -81,11 +85,11 @@ def transcribe(files: list[UploadFile] = File(...)):
 
 @app.get("/transcriptions")
 def get_transcriptions():
-    """Retrieves all transcriptions from the database."""
+    """Retrieves all transcriptions from the database, oldest first."""
     return database.get_all_transcriptions()
 
 
 @app.get("/search")
 def search(filename: str = Query(..., min_length=1)):
-    """Query for transcriptions from the database."""
+    """Returns transcriptions whose audio file name contains `filename` (case-insensitive)."""
     return database.search_transcriptions(filename)

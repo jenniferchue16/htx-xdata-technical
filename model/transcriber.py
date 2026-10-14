@@ -1,3 +1,5 @@
+"""Audio preprocessing and Whisper speech recognition."""
+
 import librosa
 from transformers import pipeline
 
