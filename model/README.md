@@ -55,12 +55,11 @@ If the file can't be decoded or transcribed, it returns an error status, which t
 
 ### 3. Containerisation (Docker)
 - **Image contents:**
-  - ffmpeg is installed for `.m4a` support.
   - CPU-only torch is installed.
   - The Whisper model is downloaded at **build time**, so the container starts fast and works offline.
 - **Health check:** Docker checks `/health` every 5 s during startup, then every 5 minutes.
 - **The port is not published:** only the backend can reach this service (`http://model:8001`). Uploads can't
-  bypass the backend's checks, and the service that decodes untrusted audio with ffmpeg isn't exposed.
+  bypass the backend's checks, and the service that decodes untrusted audio isn't exposed.
 
 
 ## Assumptions

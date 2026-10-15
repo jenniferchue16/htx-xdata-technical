@@ -3,7 +3,7 @@ import { useState, type SubmitEvent } from "react";
 import { transcribeFiles, type UploadResponse } from "./api";
 
 // Same formats the backend accepts
-const ACCEPTED_FORMATS = ".mp3,.wav,.m4a,.flac,.ogg";
+const ACCEPTED_FORMATS = ".mp3,.wav,.flac,.ogg";
 
 export default function UploadForm({ onUploaded }: { onUploaded: () => void }) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);

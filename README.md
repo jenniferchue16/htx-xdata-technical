@@ -27,7 +27,30 @@ See [architecture.pdf](architecture.pdf) for the architecture diagram, plus a de
 
 ## Setup
 
-**Prerequisites:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Docker Engine 25+).
+### 1. Install Docker
+
+You need Docker Engine 25+ and Docker Compose v2.20+. Docker Desktop includes both.
+
+- **Windows:** install [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
+  (or run `winget install Docker.DockerDesktop`), keep the default WSL 2 option, then start Docker Desktop.
+- **macOS:** install [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/), choosing
+  the Apple silicon or Intel version for your Mac (or run `brew install --cask docker`), then start Docker Desktop.
+- **Linux:** install [Docker Engine](https://docs.docker.com/engine/install/) and the Compose plugin for your
+  distribution. On Ubuntu, after adding Docker's apt repository as described there:
+  `sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin`.
+
+Check the installation:
+
+```bash
+docker --version          # 25 or later
+docker compose version    # v2.20 or later
+```
+
+If you are not using Docker Desktop, you may need to install the docker-buildx plugin as well (check with
+`docker buildx version`). Without it, Docker uses its legacy builder, which doesn't support the test commands'
+`--no-cache-filter` option and also runs the test stages on every build.
+
+### 2. Start the app
 
 From the repository root:
 
@@ -35,7 +58,7 @@ From the repository root:
 docker compose up --build
 ```
 
-- The first build takes a few minutes. It downloads PyTorch (CPU-only build), ffmpeg and the Whisper model.
+- The first build takes a few minutes. It downloads PyTorch (CPU-only build) and the Whisper model.
   Later builds reuse the cache.
 - The services start in order: model → backend (once Whisper has loaded) → frontend.
 - Open **http://localhost:3000** to use the app, or **http://localhost:8000/docs** to try the API directly.

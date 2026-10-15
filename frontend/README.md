@@ -23,8 +23,7 @@ Open **http://localhost:3000** once the stack is running.
 
 | Feature | How it works |
 |---|---|
-| **Upload audio** | Choose one or more files and click. Supported formats include `.mp3`, `.wav`, `.m4a`, `.flac`, `.ogg`. 
-**Transcribe** | Each file gets its own ✓ or ✗ with the transcription or the error, plus a summary ("2 of 3 transcribed"). If the backend renamed a duplicate, it shows "(saved as sample_1.mp3)". Close the results with ×. |
+| **Upload audio** | Choose one or more files and click **Transcribe**. Supported formats include `.mp3`, `.wav`, `.flac`, `.ogg`. Each file gets its own ✓ or ✗ with the transcription or the error, plus a summary ("2 of 3 transcribed"). If the backend renamed a duplicate, it shows "(saved as sample_1.mp3)". Close the results with ×. |
 | **List transcriptions** | All transcriptions, oldest first, with file name, time and transcript. The list reloads automatically after each upload. |
 | **Search by file name** | Type part of a name and press **Search** or Enter. **Clear** returns to the full list. |
 
@@ -84,7 +83,6 @@ needs no backend changes.
   page shows an error (HTTP 504), although the backend keeps processing and saves the transcriptions, which then
   appear in the list.
 
----
 
 ## Tests
 

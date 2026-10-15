@@ -27,11 +27,11 @@ Returns the status of the service.
 ### `POST /transcribe`
 Accepts one or more audio files (multipart form field `files`) and returns a result for each file.
 
-- Supported formats: `.mp3`, `.wav`, `.m4a`, `.flac`, `.ogg`
+- Supported formats: `.mp3`, `.wav`, `.flac`, `.ogg`
 - If a file name already exists, a suffix is added: `sample1.mp3` → `sample1_1.mp3`
 
 ```bash
-curl -F "files=@sample1.mp3" -F "files=@sample2.m4a" http://localhost:8000/transcribe
+curl -F "files=@sample1.mp3" -F "files=@sample2.wav" http://localhost:8000/transcribe
 ```
 
 Response (`200 OK`):
@@ -143,7 +143,6 @@ Returns transcriptions whose file name **contains** `<text>`, ignoring case.
 - **Search is by file name only,** matching the stored name (including any `_1` suffix).
 - **No authentication.** The API is intended to run locally.
 
----
 
 ## Tests
 
