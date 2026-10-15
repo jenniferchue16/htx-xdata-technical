@@ -11,10 +11,14 @@ and lets you list and search past transcriptions by audio file name.
   calls the model service and stores the results.
 - **model**: a separate service that turns audio into text. It stores nothing and is only reachable by the backend.
 
+See [architecture.pdf](architecture.pdf) for the architecture diagram, plus a detailed diagram of each component
+(upload flow, frontend, backend, model service, database) with its assumptions and considerations.
+
 ## Project structure
 
 ```
 .
+├── architecture.pdf     # architecture and component diagrams
 ├── docker-compose.yml   # runs all services
 ├── backend/             # public REST API, file storage, SQLite database
 ├── model/               # Whisper model service (audio → text), called by the backend
@@ -57,6 +61,8 @@ docker build --progress=plain --no-cache-filter test --target test frontend
 - See the [backend](backend/README.md#tests) and [frontend](frontend/README.md#tests) READMEs for what each test checks.
 
 ## Documentation
+
+- [architecture.pdf](architecture.pdf): architecture diagram and component diagrams
 
 Each service has its own README with its API reference, design decisions, assumptions and known limitations:
 
