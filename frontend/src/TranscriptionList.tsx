@@ -1,3 +1,4 @@
+// Lists all transcriptions, or those whose file name matches the search
 import { useEffect, useState, type SubmitEvent } from "react";
 import { getTranscriptions, searchTranscriptions, type Transcription } from "./api";
 
@@ -75,15 +76,18 @@ export default function TranscriptionList({ refreshKey }: { refreshKey: number }
 
       {errorMessage && <p role="alert" className="mt-4 text-sm text-fault">{errorMessage}</p>}
 
-      <p className="mt-4 text-sm text-graphite">
-        {activeSearch
-          ? count === 0
-            ? `No file names contain "${activeSearch}".`
-            : `${count} ${count === 1 ? "result" : "results"} for "${activeSearch}"`
-          : count === 0
-            ? "No transcriptions yet. Upload a recording to create one."
-            : `${count} ${count === 1 ? "transcription" : "transcriptions"}`}
-      </p>
+      {/* Hidden while there's an error, so a failed load isn't mistaken for an empty list */}
+      {!errorMessage && (
+        <p className="mt-4 text-sm text-graphite">
+          {activeSearch
+            ? count === 0
+              ? `No file names contain "${activeSearch}".`
+              : `${count} ${count === 1 ? "result" : "results"} for "${activeSearch}"`
+            : count === 0
+              ? "No transcriptions yet. Upload a recording to create one."
+              : `${count} ${count === 1 ? "transcription" : "transcriptions"}`}
+        </p>
+      )}
 
       <ul className="mt-2 divide-y divide-rule">
         {transcriptions.map((transcription) => (

@@ -1,3 +1,4 @@
+// Uploads one or more audio files and shows the result for each file
 import { useState, type SubmitEvent } from "react";
 import { transcribeFiles, type UploadResponse } from "./api";
 

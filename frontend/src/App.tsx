@@ -1,3 +1,4 @@
+// Page layout: the upload form, then the list of transcriptions
 import { useState } from "react";
 import TranscriptionList from "./TranscriptionList";
 import UploadForm from "./UploadForm";

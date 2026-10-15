@@ -19,3 +19,11 @@ services:
     depends_on:
       model:
         condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    # nginx forwards /api to the backend, so start the backend first
+    depends_on:
+      - backend

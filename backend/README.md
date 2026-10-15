@@ -12,7 +12,6 @@ For setup instructions, see the [root README](../README.md).
 | `database.py` | SQLite table and queries |
 | `data/` | Created at runtime: `transcriptions.db` and `uploads/` (git-ignored) |
 
----
 
 ## API reference
 
@@ -75,7 +74,6 @@ Returns all transcriptions, oldest first.
 Returns transcriptions whose file name **contains** `<text>`, ignoring case.
 `/search?filename=sample1` matches both `sample1.mp3` and `Sample1_1.mp3`. Same response format as `/transcriptions`.
 
----
 
 ## Design decisions
 
@@ -120,8 +118,8 @@ Returns transcriptions whose file name **contains** `<text>`, ignoring case.
 
 ### 3. Containerisation (Docker)
 
-- **One image per service,** each on `python:3.12-slim`, and one `docker-compose.yml` at the repo root that runs
-  them all.
+- **Docker image,** built on `python:3.12-slim` and run with the other services by the `docker-compose.yml` at
+  the repo root.
 - **Layer caching:** dependencies are installed before the code is copied, so code changes rebuild in seconds.
 - **Startup order:** the backend starts only once the model service is healthy
   (`depends_on: condition: service_healthy`), so it never accepts uploads before Whisper has loaded.
@@ -129,7 +127,6 @@ Returns transcriptions whose file name **contains** `<text>`, ignoring case.
   so the database and uploads survive container restarts and are easy to inspect during development.
   We can use a Docker **named volume** if this application was productionised. 
 
----
 
 ## Assumptions
 

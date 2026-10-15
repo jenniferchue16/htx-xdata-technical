@@ -11,7 +11,6 @@ It is called by the [backend](../backend/README.md) over Docker's internal netwo
 | `transcriber.py` | Audio preprocessing and the Whisper pipeline |
 | `config.py` | Model name (`openai/whisper-tiny`), shared by `transcriber.py` and the Dockerfile |
 
----
 
 ## API reference
 
@@ -27,7 +26,6 @@ Accepts **one** audio file (multipart form field `file`) and returns its transcr
 If the file can't be decoded or transcribed, it returns an error status, which the backend reports to the user as
 `Could not transcribe file`.
 
----
 
 ## Design decisions
 
@@ -64,7 +62,6 @@ If the file can't be decoded or transcribed, it returns an error status, which t
 - **The port is not published:** only the backend can reach this service (`http://model:8001`). Uploads can't
   bypass the backend's checks, and the service that decodes untrusted audio with ffmpeg isn't exposed.
 
----
 
 ## Assumptions
 

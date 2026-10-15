@@ -6,6 +6,7 @@ and lets you list and search past transcriptions by audio file name.
 
 ## Architecture
 
+- **frontend**: a React single-page app for uploading audio, listing transcriptions and searching them.
 - **backend**: the public API (`/health`, `/transcribe`, `/transcriptions`, `/search`). It saves the uploaded files,
   calls the model service and stores the results.
 - **model**: a separate service that turns audio into text. It stores nothing and is only reachable by the backend.
@@ -17,7 +18,7 @@ and lets you list and search past transcriptions by audio file name.
 ├── docker-compose.yml   # runs all services
 ├── backend/             # public REST API, file storage, SQLite database
 ├── model/               # Whisper model service (audio → text), called by the backend
-└── frontend/            # single-page application (to be added)
+└── frontend/            # React + TypeScript single-page app
 ```
 
 ## Setup
@@ -32,8 +33,8 @@ docker compose up --build
 
 - The first build takes a few minutes. It downloads PyTorch (CPU-only build), ffmpeg and the Whisper model.
   Later builds reuse the cache.
-- The backend starts only once the model service is healthy (i.e. Whisper has loaded).
-- Open **http://localhost:8000/docs** to try the API.
+- The services start in order: model → backend (once Whisper has loaded) → frontend.
+- Open **http://localhost:3000** to use the app, or **http://localhost:8000/docs** to try the API directly.
 - Transcriptions and uploaded files are saved to `backend/data/` on your machine, so they persist across restarts.
 
 To stop: `Ctrl+C`, or `docker compose down` if started with `-d`.
@@ -44,4 +45,4 @@ Each service has its own README with its API reference, design decisions, assump
 
 - [backend/README.md](backend/README.md): public REST API and SQLite database
 - [model/README.md](model/README.md): Whisper model service and audio preprocessing
-- `frontend/README.md`: to be added
+- [frontend/README.md](frontend/README.md): React app, how it connects to the backend, and its Docker setup
