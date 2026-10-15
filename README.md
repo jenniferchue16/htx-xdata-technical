@@ -39,6 +39,23 @@ docker compose up --build
 
 To stop: `Ctrl+C`, or `docker compose down` if started with `-d`.
 
+## Running tests
+
+The backend and frontend each have 3 unit tests, which run inside Docker. From the repository root:
+
+```bash
+docker build --progress=plain --no-cache-filter test --target test backend
+docker build --progress=plain --no-cache-filter test --target test frontend
+```
+
+- Each command fails if any test fails. Look for `3 passed` in the output.
+- `--progress=plain` shows each test's result, and `--no-cache-filter test` makes Docker re-run the tests every
+  time instead of reusing the result of an earlier run.
+- The tests replace the services they depend on with fakes, so they don't need the model or the backend to be
+  running, and never touch the data in `backend/data/`.
+- The tests are only run with these commands; they're not included in the images started by `docker compose up`.
+- See the [backend](backend/README.md#tests) and [frontend](frontend/README.md#tests) READMEs for what each test checks.
+
 ## Documentation
 
 Each service has its own README with its API reference, design decisions, assumptions and known limitations:

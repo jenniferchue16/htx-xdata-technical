@@ -10,6 +10,7 @@ For setup instructions, see the [root README](../README.md).
 |---|---|
 | `main.py` | API endpoints; saves uploads under unique names and calls the model service |
 | `database.py` | SQLite table and queries |
+| `tests/` | Unit tests (see [Tests](#tests)) |
 | `data/` | Created at runtime: `transcriptions.db` and `uploads/` (git-ignored) |
 
 
@@ -141,3 +142,20 @@ Returns transcriptions whose file name **contains** `<text>`, ignoring case.
   queue them as background jobs.
 - **Search is by file name only,** matching the stored name (including any `_1` suffix).
 - **No authentication.** The API is intended to run locally.
+
+---
+
+## Tests
+
+Three unit tests in `tests/test_api.py`, written with pytest and FastAPI's `TestClient`. To run them, see the
+[root README](../README.md#running-tests).
+
+| Test | Checks |
+|---|---|
+| Transcribing a batch | Uploading `sample.mp3` twice and `notes.txt` returns a 2-of-3 summary, saves the second file as `sample_1.mp3`, reports `notes.txt` as `Unsupported file type`, and stores both transcriptions |
+| Model service down | Returns `503` and saves nothing to disk or the database |
+| Search | Matches part of a name regardless of case (`SAMPLE` finds `sample.mp3`), and treats `_` literally (`_1` finds only `sample_1.mp3`) |
+
+- **The model service is faked,** so the tests don't need Whisper and run in under a second.
+- **Each test uses an empty, temporary data folder** (set through the `DATA_DIRECTORY` environment variable), so
+  the tests never touch `backend/data/`.

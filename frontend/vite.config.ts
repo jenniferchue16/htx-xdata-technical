@@ -1,9 +1,11 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  // Tests run in jsdom, a simulated browser
+  test: { environment: "jsdom" },
   server: {
     port: 3000,
     // Forward /api/* to the backend, so the browser only talks to one origin (no CORS needed)

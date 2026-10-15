@@ -4,11 +4,14 @@ Every query uses ? placeholders, so user input is passed as data and never run a
 A new connection is opened per call because SQLite connections can't be shared across FastAPI's worker threads.
 """
 
+import os
 import sqlite3
 from pathlib import Path
 
-DATABASE_PATH = Path(__file__).parent / "data" / "transcriptions.db"
-DATABASE_PATH.parent.mkdir(exist_ok=True)
+# Database and uploads live in backend/data; the tests point DATA_DIRECTORY at a temporary folder instead
+DATA_DIRECTORY = Path(os.getenv("DATA_DIRECTORY", Path(__file__).parent / "data"))
+DATABASE_PATH = DATA_DIRECTORY / "transcriptions.db"
+DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 # Creates the table on startup if it doesn't exist yet.
 # created_at is set by SQLite as a UTC timestamp in ISO 8601 format, e.g. 2026-10-11T14:52:50Z

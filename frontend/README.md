@@ -14,6 +14,7 @@ Open **http://localhost:3000** once the stack is running.
 | `src/UploadForm.tsx` | Single and batch upload, with a result for each file |
 | `src/TranscriptionList.tsx` | List of all transcriptions, and search by file name |
 | `src/api.ts` | The three backend calls, with TypeScript types for every response |
+| `src/*.test.ts(x)` | Unit tests (see [Tests](#tests)) |
 | `vite.config.ts` | Vite build settings |
 | `nginx.conf` | Serves the app and forwards `/api` to the backend |
 | `Dockerfile` | Two-stage build: Node builds the app, nginx serves it |
@@ -82,3 +83,19 @@ needs no backend changes.
 - **Very long batches can time out:** nginx waits up to 300 s for an upload request. If a batch takes longer, the
   page shows an error (HTTP 504), although the backend keeps processing and saves the transcriptions, which then
   appear in the list.
+
+---
+
+## Tests
+
+Three unit tests, written with Vitest and React Testing Library, which render the components in a simulated
+browser (jsdom) and use them like a user would. To run them, see the [root README](../README.md#running-tests).
+
+| Test (file) | Checks |
+|---|---|
+| Error messages (`api.test.ts`) | When the backend returns an error, the page shows the backend's own message (e.g. "Model service is unavailable") |
+| Upload (`UploadForm.test.tsx`) | Uploading 2 files shows "1 of 2 transcribed", the renamed file ("saved as sample_1.mp3") and the error for the rejected file, then clears the file picker |
+| Search (`TranscriptionList.test.tsx`) | Typing in the search box sends no request; clicking **Search** requests matching transcriptions and shows them with a result count |
+
+- **The backend is faked** by replacing the browser's `fetch` with prepared responses, so the tests don't need the
+  backend running.

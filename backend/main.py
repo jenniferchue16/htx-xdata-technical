@@ -9,7 +9,7 @@ from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 
 import database
 
-UPLOAD_DIRECTORY = Path(__file__).parent / "data" / "uploads"
+UPLOAD_DIRECTORY = database.DATA_DIRECTORY / "uploads"
 UPLOAD_DIRECTORY.mkdir(parents=True, exist_ok=True)
 # Docker Compose sets this to http://model:8001; the default is for running locally
 MODEL_URL = os.getenv("MODEL_URL", "http://localhost:8001")
