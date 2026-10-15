@@ -1,5 +1,8 @@
 # HTX xData Technical Test: Audio Transcription
 
+![A screenshot of the app](media/application.png)
+
+
 A web application that transcribes uploaded audio files with OpenAI's
 [Whisper](https://huggingface.co/openai/whisper-tiny) (`openai/whisper-tiny`), stores the results in SQLite,
 and lets you list and search past transcriptions by audio file name.
